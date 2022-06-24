@@ -1,0 +1,85 @@
+# OpenSeedbox base image builder
+
+```bash
+$ docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --tag openseedbox/base --push .
+[+] Building 63.5s (57/57) FINISHED                                                                                                                                                                                
+ => [internal] load .dockerignore                                                                                                                                                                             0.0s
+ => => transferring context: 2B                                                                                                                                                                               0.0s
+ => [internal] load build definition from Dockerfile                                                                                                                                                          0.0s
+ => => transferring dockerfile: 2.13kB                                                                                                                                                                        0.0s
+ => resolve image config for docker.io/docker/dockerfile:1                                                                                                                                                    0.5s
+ => CACHED docker-image://docker.io/docker/dockerfile:1@sha256:443aab4ca21183e069e7d8b2dc68006594f40bddf1b15bbd83f5137bd93e80e2                                                                               0.0s
+ => => resolve docker.io/docker/dockerfile:1@sha256:443aab4ca21183e069e7d8b2dc68006594f40bddf1b15bbd83f5137bd93e80e2                                                                                          0.0s
+ => [linux/amd64 internal] load metadata for docker.io/library/tomcat:10.1.0-jre11-temurin                                                                                                                    0.3s
+ => [linux/arm64 internal] load metadata for docker.io/library/debian:bullseye-slim                                                                                                                           0.6s
+ => [linux/arm64 internal] load metadata for docker.io/library/eclipse-temurin:11-jdk                                                                                                                         0.5s
+ => [linux/amd64 internal] load metadata for docker.io/library/eclipse-temurin:11-jdk                                                                                                                         0.5s
+ => [linux/amd64 internal] load metadata for docker.io/library/debian:bullseye-slim                                                                                                                           0.5s
+ => [linux/arm64 internal] load metadata for docker.io/library/tomcat:10.1.0-jre11-temurin                                                                                                                    0.4s
+ => [linux/arm/v7 internal] load metadata for docker.io/library/eclipse-temurin:11-jdk                                                                                                                        0.5s
+ => [linux/arm/v7 internal] load metadata for docker.io/library/tomcat:10.1.0-jre11-temurin                                                                                                                   0.5s
+ => [linux/arm/v7 internal] load metadata for docker.io/library/debian:bullseye-slim                                                                                                                          0.6s
+ => [linux/amd64 openseedbox 1/6] FROM docker.io/library/debian:bullseye-slim@sha256:f6957458017ec31c4e325a76f39d6323c4c21b0e31572efa006baa927a160891                                                         0.0s
+ => => resolve docker.io/library/debian:bullseye-slim@sha256:f6957458017ec31c4e325a76f39d6323c4c21b0e31572efa006baa927a160891                                                                                 0.0s
+ => [linux/amd64 tomcat 1/2] FROM docker.io/library/tomcat:10.1.0-jre11-temurin@sha256:be9f9ce3e026921cfa842852f93f72207e44ba2b95be86bc69526361f1eb88b3                                                       0.0s
+ => => resolve docker.io/library/tomcat:10.1.0-jre11-temurin@sha256:be9f9ce3e026921cfa842852f93f72207e44ba2b95be86bc69526361f1eb88b3                                                                          0.0s
+ => [linux/amd64 java 1/2] FROM docker.io/library/eclipse-temurin:11-jdk@sha256:32459ee807582b4ce28ec42c986530de2c7293d69269e08b3d9ff8e0e865f0bc                                                              0.0s
+ => => resolve docker.io/library/eclipse-temurin:11-jdk@sha256:32459ee807582b4ce28ec42c986530de2c7293d69269e08b3d9ff8e0e865f0bc                                                                               0.0s
+ => [linux/arm/v7 builder 1/5] FROM docker.io/library/debian:bullseye-slim@sha256:f6957458017ec31c4e325a76f39d6323c4c21b0e31572efa006baa927a160891                                                            0.0s
+ => => resolve docker.io/library/debian:bullseye-slim@sha256:f6957458017ec31c4e325a76f39d6323c4c21b0e31572efa006baa927a160891                                                                                 0.0s
+ => [linux/arm/v7 tomcat 1/2] FROM docker.io/library/tomcat:10.1.0-jre11-temurin@sha256:be9f9ce3e026921cfa842852f93f72207e44ba2b95be86bc69526361f1eb88b3                                                      0.0s
+ => => resolve docker.io/library/tomcat:10.1.0-jre11-temurin@sha256:be9f9ce3e026921cfa842852f93f72207e44ba2b95be86bc69526361f1eb88b3                                                                          0.0s
+ => [linux/arm64 openseedbox 1/6] FROM docker.io/library/debian:bullseye-slim@sha256:f6957458017ec31c4e325a76f39d6323c4c21b0e31572efa006baa927a160891                                                         0.0s
+ => => resolve docker.io/library/debian:bullseye-slim@sha256:f6957458017ec31c4e325a76f39d6323c4c21b0e31572efa006baa927a160891                                                                                 0.0s
+ => [linux/arm64 tomcat 1/2] FROM docker.io/library/tomcat:10.1.0-jre11-temurin@sha256:be9f9ce3e026921cfa842852f93f72207e44ba2b95be86bc69526361f1eb88b3                                                       0.0s
+ => => resolve docker.io/library/tomcat:10.1.0-jre11-temurin@sha256:be9f9ce3e026921cfa842852f93f72207e44ba2b95be86bc69526361f1eb88b3                                                                          0.0s
+ => [linux/arm/v7 java 1/2] FROM docker.io/library/eclipse-temurin:11-jdk@sha256:32459ee807582b4ce28ec42c986530de2c7293d69269e08b3d9ff8e0e865f0bc                                                             0.0s
+ => => resolve docker.io/library/eclipse-temurin:11-jdk@sha256:32459ee807582b4ce28ec42c986530de2c7293d69269e08b3d9ff8e0e865f0bc                                                                               0.0s
+ => [linux/arm64 java 1/2] FROM docker.io/library/eclipse-temurin:11-jdk@sha256:32459ee807582b4ce28ec42c986530de2c7293d69269e08b3d9ff8e0e865f0bc                                                              0.0s
+ => => resolve docker.io/library/eclipse-temurin:11-jdk@sha256:32459ee807582b4ce28ec42c986530de2c7293d69269e08b3d9ff8e0e865f0bc                                                                               0.0s
+ => CACHED [linux/arm/v7 java 2/2] RUN jlink         --add-modules                 java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,j  0.0s
+ => CACHED [linux/arm/v7 builder 2/5] COPY --from=java /java /java                                                                                                                                            0.0s
+ => CACHED [linux/arm/v7 tomcat 2/2] RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalina.valves.HealthCheckValve" />' /usr/local/tomcat/conf/server.xml;                        0.0s
+ => CACHED [linux/arm/v7 builder 3/5] COPY --from=tomcat /usr/local/tomcat /tomcat                                                                                                                            0.0s
+ => CACHED [linux/arm/v7 openseedbox 2/6] RUN apt update -qq && apt install -y --no-install-recommends         git zip unzip python ca-certificates curl;                                                     0.0s
+ => CACHED [linux/arm/v7 openseedbox 3/6] RUN curl -S -s -O "https://downloads.typesafe.com/play/1.4.6/play-1.4.6.zip"         && unzip -q play-1.4.6.zip         && rm -rf play-1.4.6/documentation/ play-1  0.0s
+ => CACHED [linux/arm/v7 openseedbox 4/6] RUN echo y | /play/play install siena-2.0.7 || echo "Downloading directly ... "         && curl -S -s -L -o siena-2.0.7.zip "https://www.playframework.com/modules  0.0s
+ => CACHED [linux/arm/v7 openseedbox 5/6] WORKDIR /src                                                                                                                                                        0.0s
+ => CACHED [linux/arm/v7 openseedbox 6/6] RUN bash -c "for repo in openseedbox{-common,-server,}; do echo cloning $repo; git clone --depth=1 -q https://github.com/openseedbox/$repo ; done"                  0.0s
+ => CACHED [linux/arm/v7 builder 4/5] COPY --from=openseedbox /src /src                                                                                                                                       0.0s
+ => CACHED [linux/arm/v7 builder 5/5] COPY --from=openseedbox /play /play                                                                                                                                     0.0s
+ => CACHED [linux/amd64 java 2/2] RUN jlink         --add-modules                 java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,ja  0.0s
+ => CACHED [linux/amd64 builder 2/5] COPY --from=java /java /java                                                                                                                                             0.0s
+ => CACHED [linux/amd64 tomcat 2/2] RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalina.valves.HealthCheckValve" />' /usr/local/tomcat/conf/server.xml;                         0.0s
+ => CACHED [linux/amd64 builder 3/5] COPY --from=tomcat /usr/local/tomcat /tomcat                                                                                                                             0.0s
+ => CACHED [linux/amd64 openseedbox 2/6] RUN apt update -qq && apt install -y --no-install-recommends         git zip unzip python ca-certificates curl;                                                      0.0s
+ => CACHED [linux/amd64 openseedbox 3/6] RUN curl -S -s -O "https://downloads.typesafe.com/play/1.4.6/play-1.4.6.zip"         && unzip -q play-1.4.6.zip         && rm -rf play-1.4.6/documentation/ play-1.  0.0s
+ => CACHED [linux/amd64 openseedbox 4/6] RUN echo y | /play/play install siena-2.0.7 || echo "Downloading directly ... "         && curl -S -s -L -o siena-2.0.7.zip "https://www.playframework.com/modules/  0.0s
+ => CACHED [linux/amd64 openseedbox 5/6] WORKDIR /src                                                                                                                                                         0.0s
+ => CACHED [linux/amd64 openseedbox 6/6] RUN bash -c "for repo in openseedbox{-common,-server,}; do echo cloning $repo; git clone --depth=1 -q https://github.com/openseedbox/$repo ; done"                   0.0s
+ => CACHED [linux/amd64 builder 4/5] COPY --from=openseedbox /src /src                                                                                                                                        0.0s
+ => CACHED [linux/amd64 builder 5/5] COPY --from=openseedbox /play /play                                                                                                                                      0.0s
+ => CACHED [linux/arm64 java 2/2] RUN jlink         --add-modules                 java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,ja  0.0s
+ => CACHED [linux/arm64 builder 2/5] COPY --from=java /java /java                                                                                                                                             0.0s
+ => CACHED [linux/arm64 tomcat 2/2] RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalina.valves.HealthCheckValve" />' /usr/local/tomcat/conf/server.xml;                         0.0s
+ => CACHED [linux/arm64 builder 3/5] COPY --from=tomcat /usr/local/tomcat /tomcat                                                                                                                             0.0s
+ => CACHED [linux/arm64 openseedbox 2/6] RUN apt update -qq && apt install -y --no-install-recommends         git zip unzip python ca-certificates curl;                                                      0.0s
+ => CACHED [linux/arm64 openseedbox 3/6] RUN curl -S -s -O "https://downloads.typesafe.com/play/1.4.6/play-1.4.6.zip"         && unzip -q play-1.4.6.zip         && rm -rf play-1.4.6/documentation/ play-1.  0.0s
+ => CACHED [linux/arm64 openseedbox 4/6] RUN echo y | /play/play install siena-2.0.7 || echo "Downloading directly ... "         && curl -S -s -L -o siena-2.0.7.zip "https://www.playframework.com/modules/  0.0s
+ => CACHED [linux/arm64 openseedbox 5/6] WORKDIR /src                                                                                                                                                         0.0s
+ => CACHED [linux/arm64 openseedbox 6/6] RUN bash -c "for repo in openseedbox{-common,-server,}; do echo cloning $repo; git clone --depth=1 -q https://github.com/openseedbox/$repo ; done"                   0.0s
+ => CACHED [linux/arm64 builder 4/5] COPY --from=openseedbox /src /src                                                                                                                                        0.0s
+ => CACHED [linux/arm64 builder 5/5] COPY --from=openseedbox /play /play                                                                                                                                      0.0s
+ => exporting to image                                                                                                                                                                                       62.3s
+ => => exporting layers                                                                                                                                                                                       8.5s
+ => => exporting manifest sha256:b6dc398b961eaafcecd807e490efe0f1dd312432c690fe257306c3a049b998f0                                                                                                             0.0s
+ => => exporting config sha256:524adc1ae8e26b385c10524d3a33934bddd4a75ec6bed5bf9a325ecc0955a558                                                                                                               0.0s
+ => => exporting manifest sha256:6186726bedc839088ee01930a1ef074c28dcf50b07be9f1088c0788ead334e5c                                                                                                             0.0s
+ => => exporting config sha256:82dbbb6494d55e7c7a769ab7b08c3d25cbccf36af775514398932521eacbcf51                                                                                                               0.0s
+ => => exporting manifest sha256:73257a3a681a91b78923d26b5bf305ded67337de9b9b99259cadc62d1199632a                                                                                                             0.0s
+ => => exporting config sha256:0ba3f2836c442f32760807c09e255d565e8b1afaf9f3b8fb93fbe854f9e64b57                                                                                                               0.0s
+ => => exporting manifest list sha256:07a69b81c82d6956d35de45d0e47415a53ba81215e81dba2c1e3e87c91f1972d                                                                                                        0.0s
+ => => pushing layers                                                                                                                                                                                        52.1s
+ => => pushing manifest for docker.io/openseedbox/base:latest@sha256:07a69b81c82d6956d35de45d0e47415a53ba81215e81dba2c1e3e87c91f1972d                                                                         1.6s
+ => [auth] openseedbox/base:pull,push token for registry-1.docker.io
+```
