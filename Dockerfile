@@ -10,7 +10,9 @@ RUN jlink \
         --compress=2
 
 
-FROM tomcat:10.1.0-jre11-openjdk-slim-bullseye as tomcat
+FROM tomcat:10.1.0-jre11-temurin as tomcat
+#------------------------^
+# openjdk doesn't have linux/arm/v7 platform :(
 # Enable Tomcat HealthCheck endpoint
 RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalina.valves.HealthCheckValve" />' /usr/local/tomcat/conf/server.xml;
 
