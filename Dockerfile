@@ -22,8 +22,9 @@ RUN apt update -qq && apt install -y --no-install-recommends \
 # Install play
 ENV PLAY_VERSION=1.4.6
 RUN curl -S -s -O "https://downloads.typesafe.com/play/${PLAY_VERSION}/play-${PLAY_VERSION}.zip" \
-        && unzip -q play-${PLAY_VERSION}.zip -x play-${PLAY_VERSION}/documentation/* play-${PLAY_VERSION}/samples-and-tests/* \
-        && mv /play-${PLAY_VERSION} /play \
+        && unzip -q play-${PLAY_VERSION}.zip \
+        && rm -rf play-${PLAY_VERSION}/documentation/ play-${PLAY_VERSION}/samples-and-tests/ \
+        && mv play-${PLAY_VERSION} /play \
         && rm play-${PLAY_VERSION}.zip
 
 # Install siena module to play
