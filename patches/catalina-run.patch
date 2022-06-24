@@ -1,0 +1,26 @@
+--- catalina.sh	2022-06-02 11:33:00.000000000 +0200
++++ catalina.sh	2022-06-24 17:43:09.186599227 +0200
+@@ -362,16 +362,23 @@
+         -Dcatalina.home="$CATALINA_HOME" \
+         -Djava.io.tmpdir="$CATALINA_TMPDIR" \
+         org.apache.catalina.startup.Bootstrap "$@" start
+     fi
+   fi
+ 
+ elif [ "$1" = "run" ]; then
+ 
++  if [ -n "$OPENSEEDBOX_CONTEXT_PATH" -a "$OPENSEEDBOX_CONTEXT_PATH" != "/" ]; then
++    set -e
++    mkdir -pv `dirname $CATALINA_HOME/webapps/$OPENSEEDBOX_CONTEXT_PATH`
++    find $CATALINA_HOME/webapps/ -type f -name ROOT* -exec mv -v {} $CATALINA_HOME/webapps/${OPENSEEDBOX_CONTEXT_PATH}.war \; -quit
++    find $CATALINA_HOME/webapps/ -type d -name ROOT* -exec mv -T {} $CATALINA_HOME/webapps/${OPENSEEDBOX_CONTEXT_PATH} \; -quit
++    set +e
++  fi
+   shift
+   if [ "$1" = "-security" ] ; then
+     if [ $have_tty -eq 1 ]; then
+       echo "Using Security Manager"
+     fi
+     shift
+     eval exec "\"$_RUNJAVA\"" "\"$CATALINA_LOGGING_CONFIG\"" $LOGGING_MANAGER "$JAVA_OPTS" "$CATALINA_OPTS" \
+       -classpath "\"$CLASSPATH\"" \
