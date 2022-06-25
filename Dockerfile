@@ -3,19 +3,22 @@
 FROM eclipse-temurin:11-jdk AS java
 RUN jlink \
         --add-modules \
-                java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,java.naming,java.prefs,java.rmi,java.scripting,java.security.jgss,java.security.sasl,java.sql,java.sql.rowset,java.transaction.xa,java.xml,jdk.crypto.cryptoki,jdk.jdi,jdk.management,jdk.unsupported \
+                java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,java.naming,java.net.http,java.prefs,java.rmi,java.scripting,java.security.jgss,java.security.sasl,java.sql,java.sql.rowset,java.transaction.xa,java.xml,jdk.crypto.cryptoki,jdk.jdi,jdk.management,jdk.unsupported \
         --output /java/ \
         --strip-debug \
         --no-man-pages \
         --compress=2
 
 
-FROM tomcat:10.1.0-jre11-temurin as tomcat
+FROM tomcat:10.1.0-jdk11-temurin as tomcat
 #------------------------^
 # openjdk doesn't have linux/arm/v7 platform :(
 # Enable Tomcat HealthCheck endpoint
 RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalina.valves.HealthCheckValve" />' /usr/local/tomcat/conf/server.xml;
 
+# HEALTHCHECK without curl
+COPY HealthCheck.java ${CATALINA_HOME}/
+RUN ${JAVA_HOME}/bin/javac HealthCheck.java && rm -v HealthCheck.java
 
 FROM debian:bullseye-slim as openseedbox
 RUN apt update -qq && apt install -y --no-install-recommends \
