@@ -1,5 +1,8 @@
 # syntax=docker/dockerfile:1
 
+FROM debian:bullseye-slim AS base-image
+
+
 FROM eclipse-temurin:11-jdk AS java
 RUN jlink \
         --add-modules \
@@ -20,7 +23,8 @@ RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalin
 COPY HealthCheck.java ${CATALINA_HOME}/
 RUN ${JAVA_HOME}/bin/javac HealthCheck.java && rm -v HealthCheck.java
 
-FROM debian:bullseye-slim as openseedbox
+
+FROM base-image as openseedbox
 RUN apt update -qq && apt install -y --no-install-recommends \
         git zip unzip python ca-certificates curl;
 
@@ -43,7 +47,7 @@ WORKDIR /src
 RUN bash -c "for repo in openseedbox{-common,-server,}; do echo cloning \$repo; git clone --depth=1 -q https://github.com/openseedbox/\$repo ; done"
 
 
-FROM debian:bullseye-slim AS builder
+FROM base-image AS builder
 COPY --from=java /java /java
 ENV JAVA_HOME=/java
 
