@@ -13,7 +13,7 @@ RUN jlink \
         --compress=2
 
 
-FROM tomcat:10.1.0-jdk11-temurin as tomcat
+FROM tomcat:10.1.0-jdk11-temurin-focal as tomcat
 #------------------------^
 # openjdk doesn't have linux/arm/v7 platform :(
 # Enable Tomcat HealthCheck endpoint
@@ -22,6 +22,45 @@ RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalin
 # HEALTHCHECK without curl
 COPY HealthCheck.java ${CATALINA_HOME}/
 RUN ${JAVA_HOME}/bin/javac HealthCheck.java && rm -v HealthCheck.java
+
+
+FROM base-image as tomcat-with-custom-jdk
+# Copy Java
+COPY --from=java /java /java
+ENV JAVA_HOME=/java
+ENV PATH $JAVA_HOME/bin:$PATH
+
+
+# Mimic Tomcat image (copy-paste from https://github.com/docker-library/tomcat)
+COPY --from=tomcat /usr/local/tomcat /tomcat
+ENV CATALINA_HOME /tomcat
+ENV PATH $CATALINA_HOME/bin:$PATH
+WORKDIR $CATALINA_HOME
+
+# let "Tomcat Native" live somewhere isolated
+ENV TOMCAT_NATIVE_LIBDIR $CATALINA_HOME/native-jni-lib
+ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
+
+RUN set -eux; \
+	apt-get update; \
+	xargs -rt apt-get install -y --no-install-recommends < "$TOMCAT_NATIVE_LIBDIR/.dependencies.txt"; \
+	rm -rf /var/lib/apt/lists/*
+
+# verify Tomcat Native is working properly
+RUN set -eux; \
+	nativeLines="$(catalina.sh configtest 2>&1)"; \
+	nativeLines="$(echo "$nativeLines" | grep 'Apache Tomcat Native')"; \
+	nativeLines="$(echo "$nativeLines" | sort -u)"; \
+	if ! echo "$nativeLines" | grep -E 'INFO: Loaded( APR based)? Apache Tomcat Native library' >&2; then \
+		echo >&2 "$nativeLines"; \
+		exit 1; \
+	fi
+
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
+
+RUN ["test", "-s", "HealthCheck.class"]
+HEALTHCHECK --start-period=3s CMD [ "java", "-cp", ".", "HealthCheck", "8080", "||", "exit", "1" ]
 
 
 FROM base-image as openseedbox
@@ -51,7 +90,6 @@ FROM base-image AS builder
 COPY --from=java /java /java
 ENV JAVA_HOME=/java
 
-COPY --from=tomcat /usr/local/tomcat /tomcat
 COPY --from=openseedbox /src /src
 COPY --from=openseedbox /play /play
 

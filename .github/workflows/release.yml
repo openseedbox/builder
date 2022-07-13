@@ -20,7 +20,8 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=openseedbox/base
+          BASE_DOCKER_IMAGE=openseedbox/base
+          TOMCAT_DOCKER_IMAGE=openseedbox/tomcat
           VERSION=edge
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/v}
@@ -28,11 +29,14 @@ jobs:
           if [ "${{ github.event_name }}" = "schedule" ]; then
             VERSION=nightly
           fi
-          TAGS="${DOCKER_IMAGE}:${VERSION}"
+          BASE_TAGS="${BASE_DOCKER_IMAGE}:${VERSION}"
+          TOMCAT_TAGS="${TOMCAT_DOCKER_IMAGE}:${VERSION}"
           if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-            TAGS="$TAGS,${DOCKER_IMAGE}:latest"
+            BASE_TAGS="$BASE_TAGS,${BASE_DOCKER_IMAGE}:latest"
+            TOMCAT_TAGS="$TOMCAT_TAGS,${TOMCAT_DOCKER_IMAGE}:latest"
           fi
-          echo ::set-output name=tags::${TAGS}
+          echo ::set-output name=basetags::${BASE_TAGS}
+          echo ::set-output name=tomcattags::${TOMCAT_TAGS}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -50,16 +54,25 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
-        id: docker_build
+      - name: "Build and push: tomcat"
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
+          target: tomcat-with-custom-jdk
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.prep.outputs.tomcattags }}
+          pull: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: "Build and push: base"
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.prep.outputs.tags }}
+          tags: ${{ steps.prep.outputs.basetags }}
+          pull: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}

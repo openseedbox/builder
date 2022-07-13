@@ -1,5 +1,7 @@
 # OpenSeedbox base image builder
 
+
+## openseedbox/base
 ```bash
 $ docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --tag openseedbox/base --push .
 [+] Building 63.5s (57/57) FINISHED                                                                                                                                                                                
@@ -83,3 +85,167 @@ $ docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --tag o
  => => pushing manifest for docker.io/openseedbox/base:latest@sha256:07a69b81c82d6956d35de45d0e47415a53ba81215e81dba2c1e3e87c91f1972d                                                                         1.6s
  => [auth] openseedbox/base:pull,push token for registry-1.docker.io
 ```
+
+## openseedbox/tomcat
+
+```bash
+$ docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --target tomcat-with-custom-jdk --tag openseedbox/tomcat --push .
+[+] Building 273.8s (60/60) FINISHED                                                                                                                                                                               
+ => [internal] booting buildkit                                                                                                                                                                               2.7s
+ => => pulling image moby/buildkit:buildx-stable-1                                                                                                                                                            1.5s
+ => => creating container buildx_buildkit_zealous_cori0                                                                                                                                                       1.2s
+ => [internal] load build definition from Dockerfile                                                                                                                                                          0.0s
+ => => transferring dockerfile: 3.52kB                                                                                                                                                                        0.0s
+ => [internal] load .dockerignore                                                                                                                                                                             0.0s
+ => => transferring context: 2B                                                                                                                                                                               0.0s
+ => resolve image config for docker.io/docker/dockerfile:1                                                                                                                                                    1.9s
+ => [auth] docker/dockerfile:pull token for registry-1.docker.io                                                                                                                                              0.0s
+ => docker-image://docker.io/docker/dockerfile:1@sha256:443aab4ca21183e069e7d8b2dc68006594f40bddf1b15bbd83f5137bd93e80e2                                                                                      0.4s
+ => => resolve docker.io/docker/dockerfile:1@sha256:443aab4ca21183e069e7d8b2dc68006594f40bddf1b15bbd83f5137bd93e80e2                                                                                          0.0s
+ => => sha256:09768fef35f2ee387f57e401ae685727d12d1c70c6fd8545a422850167bf1940 9.94MB / 9.94MB                                                                                                                0.3s
+ => => extracting sha256:09768fef35f2ee387f57e401ae685727d12d1c70c6fd8545a422850167bf1940                                                                                                                     0.1s
+ => [linux/arm/v7 internal] load metadata for docker.io/library/tomcat:10.1.0-jdk11-temurin-focal                                                                                                             9.8s
+ => [linux/arm64 internal] load metadata for docker.io/library/tomcat:10.1.0-jdk11-temurin-focal                                                                                                              8.7s
+ => [linux/amd64 internal] load metadata for docker.io/library/eclipse-temurin:11-jdk                                                                                                                        10.6s
+ => [linux/amd64 internal] load metadata for docker.io/library/debian:bullseye-slim                                                                                                                          11.2s
+ => [linux/amd64 internal] load metadata for docker.io/library/tomcat:10.1.0-jdk11-temurin-focal                                                                                                              8.7s
+ => [linux/arm64 internal] load metadata for docker.io/library/debian:bullseye-slim                                                                                                                          11.2s
+ => [linux/arm64 internal] load metadata for docker.io/library/eclipse-temurin:11-jdk                                                                                                                        10.6s
+ => [linux/arm/v7 internal] load metadata for docker.io/library/debian:bullseye-slim                                                                                                                         11.2s
+ => [linux/arm/v7 internal] load metadata for docker.io/library/eclipse-temurin:11-jdk                                                                                                                       11.2s
+ => [auth] library/tomcat:pull token for registry-1.docker.io                                                                                                                                                 0.0s
+ => [auth] library/eclipse-temurin:pull token for registry-1.docker.io                                                                                                                                        0.0s
+ => [auth] library/debian:pull token for registry-1.docker.io                                                                                                                                                 0.0s
+ => [linux/arm64 tomcat 1/4] FROM docker.io/library/tomcat:10.1.0-jdk11-temurin-focal@sha256:3e3fb2fc5e79cd072da234521568f56af8633d4c36727a4a30dec500e5b60522                                                28.4s
+ => => resolve docker.io/library/tomcat:10.1.0-jdk11-temurin-focal@sha256:3e3fb2fc5e79cd072da234521568f56af8633d4c36727a4a30dec500e5b60522                                                                    0.0s
+ => => sha256:f0ec9350bf8b0d1ea50051917adf749e1d1b7675d672e1e9c731b5e937ad271e 128B / 128B                                                                                                                    0.2s
+ => => sha256:b76f23e98a9714e045a0fd04e5e123200449e12c540ad5d8f415f45d7ba29a67 13.56MB / 13.56MB                                                                                                              0.9s
+ => => sha256:45f2246f583b817221ee4ff9cf491f3f17cc8881295de0bd6c1b213dbe7c8585 190.82MB / 190.82MB                                                                                                            7.4s
+ => => sha256:b48566e950556596cea9e3c651a60c69056f65cdf36aaf35cd7a5ab4c58fb904 139B / 139B                                                                                                                    0.2s
+ => => sha256:b15da1b4c110f7cc460fbf968fb55b77c541f0e3ab87b92d5e6a822cc2c593e1 15.90MB / 15.90MB                                                                                                              0.8s
+ => => sha256:11e23ac719b33170b39b7e30b8027dc09c9cbad6b503b2b6b3ebbd9d33f4adad 27.19MB / 27.19MB                                                                                                              1.0s
+ => => extracting sha256:11e23ac719b33170b39b7e30b8027dc09c9cbad6b503b2b6b3ebbd9d33f4adad                                                                                                                     1.0s
+ => => extracting sha256:b15da1b4c110f7cc460fbf968fb55b77c541f0e3ab87b92d5e6a822cc2c593e1                                                                                                                     1.4s
+ => => extracting sha256:45f2246f583b817221ee4ff9cf491f3f17cc8881295de0bd6c1b213dbe7c8585                                                                                                                     4.3s
+ => => extracting sha256:f0ec9350bf8b0d1ea50051917adf749e1d1b7675d672e1e9c731b5e937ad271e                                                                                                                     5.6s
+ => => extracting sha256:b48566e950556596cea9e3c651a60c69056f65cdf36aaf35cd7a5ab4c58fb904                                                                                                                     3.9s
+ => => extracting sha256:b76f23e98a9714e045a0fd04e5e123200449e12c540ad5d8f415f45d7ba29a67                                                                                                                     6.4s
+ => [linux/amd64 base-image 1/1] FROM docker.io/library/debian:bullseye-slim@sha256:f576b8067b77ff85c70725c976b7b6cde960898e2f19b9abab3fb148407614e2                                                          2.3s
+ => => resolve docker.io/library/debian:bullseye-slim@sha256:f576b8067b77ff85c70725c976b7b6cde960898e2f19b9abab3fb148407614e2                                                                               257.2s
+ => => sha256:461246efe0a75316d99afdbf348f7063b57b0caeee8daab775f1f08152ea36f4 31.37MB / 31.37MB                                                                                                              1.0s
+ => => extracting sha256:461246efe0a75316d99afdbf348f7063b57b0caeee8daab775f1f08152ea36f4                                                                                                                     1.2s
+ => [linux/amd64 java 1/2] FROM docker.io/library/eclipse-temurin:11-jdk@sha256:32459ee807582b4ce28ec42c986530de2c7293d69269e08b3d9ff8e0e865f0bc                                                             20.8s
+ => => resolve docker.io/library/eclipse-temurin:11-jdk@sha256:32459ee807582b4ce28ec42c986530de2c7293d69269e08b3d9ff8e0e865f0bc                                                                               0.0s
+ => => sha256:405f018f9d1d0f351c196b841a7c7f226fb8ea448acd6339a9ed8741600275a2 30.42MB / 30.42MB                                                                                                              0.9s
+ => => sha256:efd1c42ec938ee3c53cfcbeb87e187080c9fc40508b0a17f9b08346ff4a11d8d 194.08MB / 194.08MB                                                                                                            6.6s
+ => => extracting sha256:405f018f9d1d0f351c196b841a7c7f226fb8ea448acd6339a9ed8741600275a2                                                                                                                     1.6s
+ => => sha256:35541a1051f3873651101dff08aebd5d5c46f08af668b82814b8eef6800c1fc6 160B / 160B                                                                                                                    0.2s
+ => => sha256:9c045aca8dd90fbfb1afd1343ec6ce2e08ab62f20e8943d3e313dd745e22ee37 12.12MB / 12.12MB                                                                                                              0.3s
+ => => extracting sha256:9c045aca8dd90fbfb1afd1343ec6ce2e08ab62f20e8943d3e313dd745e22ee37                                                                                                                     1.1s
+ => => extracting sha256:efd1c42ec938ee3c53cfcbeb87e187080c9fc40508b0a17f9b08346ff4a11d8d                                                                                                                     6.6s
+ => => extracting sha256:35541a1051f3873651101dff08aebd5d5c46f08af668b82814b8eef6800c1fc6                                                                                                                     5.7s
+ => [internal] load build context                                                                                                                                                                             0.0s
+ => => transferring context: 1.15kB                                                                                                                                                                           0.0s
+ => [linux/amd64 tomcat 1/4] FROM docker.io/library/tomcat:10.1.0-jdk11-temurin-focal@sha256:3e3fb2fc5e79cd072da234521568f56af8633d4c36727a4a30dec500e5b60522                                                52.4s
+ => => resolve docker.io/library/tomcat:10.1.0-jdk11-temurin-focal@sha256:3e3fb2fc5e79cd072da234521568f56af8633d4c36727a4a30dec500e5b60522                                                                    0.0s
+ => => sha256:c381b80aef09271233210c28bd922e3e1a4996342cd7e9a3d02a25f493e23645 130B / 130B                                                                                                                    0.2s
+ => => sha256:a6eef08e7a71312e296522ec392c7ee57aa2866f8f2f368d1516872b08f1838d 13.55MB / 13.55MB                                                                                                              0.6s
+ => => sha256:f5e52a70019b09593791df94b802d52dc914f42328a8ed86fa419e9d17535295 171B / 171B                                                                                                                    0.2s
+ => => sha256:18a9f5d5b2e7d47fbe2b6cca47c964b7c3637ebc4eaf2b4bbb7610579cadb2d5 160B / 160B                                                                                                                    0.2s
+ => => sha256:6099f6cb4c651ca09dc4cb212ae760c08a4bc9b923c7885010f6634d9cdc8672 194.08MB / 194.08MB                                                                                                            7.6s
+ => => sha256:caca7a4a00fe7d5efa72ecdbb346c7a4ee0e8e43c3a263d2bb79893d52bd4678 16.03MB / 16.03MB                                                                                                              0.7s
+ => => sha256:d7bfe07ed8476565a440c2113cc64d7c0409dba8ef761fb3ec019d7e6b5952df 28.57MB / 28.57MB                                                                                                              1.1s
+ => => extracting sha256:d7bfe07ed8476565a440c2113cc64d7c0409dba8ef761fb3ec019d7e6b5952df                                                                                                                     3.3s
+ => => extracting sha256:caca7a4a00fe7d5efa72ecdbb346c7a4ee0e8e43c3a263d2bb79893d52bd4678                                                                                                                     5.9s
+ => => extracting sha256:6099f6cb4c651ca09dc4cb212ae760c08a4bc9b923c7885010f6634d9cdc8672                                                                                                                     7.6s
+ => => extracting sha256:18a9f5d5b2e7d47fbe2b6cca47c964b7c3637ebc4eaf2b4bbb7610579cadb2d5                                                                                                                     7.8s
+ => => extracting sha256:f5e52a70019b09593791df94b802d52dc914f42328a8ed86fa419e9d17535295                                                                                                                     5.1s
+ => => extracting sha256:a6eef08e7a71312e296522ec392c7ee57aa2866f8f2f368d1516872b08f1838d                                                                                                                     6.8s
+ => => extracting sha256:c381b80aef09271233210c28bd922e3e1a4996342cd7e9a3d02a25f493e23645                                                                                                                     4.3s
+ => [linux/arm/v7 tomcat 1/4] FROM docker.io/library/tomcat:10.1.0-jdk11-temurin-focal@sha256:3e3fb2fc5e79cd072da234521568f56af8633d4c36727a4a30dec500e5b60522                                               48.2s
+ => => resolve docker.io/library/tomcat:10.1.0-jdk11-temurin-focal@sha256:3e3fb2fc5e79cd072da234521568f56af8633d4c36727a4a30dec500e5b60522                                                                    0.0s
+ => => sha256:73ca84afaf7739ca1ddf72d620deb2b19f3b0ce07dcfa36f2173daf9da64900c 13.48MB / 13.48MB                                                                                                              0.6s
+ => => sha256:f9d351d58bce60dec4cab5b9fc3c7a7975173c8c8eafc86b98e242f4c5292988 173B / 173B                                                                                                                    0.2s
+ => => sha256:11096a662ebceb9f75f24feafc43e1461322dd2661bcf0740d5c7705b825a7e3 130B / 130B                                                                                                                    0.1s
+ => => sha256:46727000506833e62647ea0b6f24b60e7eab8a0c9e0546fa49e8a6d17860fd39 161B / 161B                                                                                                                    0.2s
+ => => sha256:bfd0ac1b7bbcb946037571bb7480a6c89b468615c9cc7274b02d79cedf7a23dc 181.97MB / 181.97MB                                                                                                            5.5s
+ => => sha256:f7ae1d24c2862f98f09de4a24a053161044e470b33c4e92d9f9807726bf4d12d 14.90MB / 14.90MB                                                                                                              0.5s
+ => => sha256:36754881d0ec0d456ee49776d62f6f0df47d29956ac7b2231b797e05780c6744 24.59MB / 24.59MB                                                                                                              0.7s
+ => => extracting sha256:36754881d0ec0d456ee49776d62f6f0df47d29956ac7b2231b797e05780c6744                                                                                                                     2.0s
+ => => extracting sha256:f7ae1d24c2862f98f09de4a24a053161044e470b33c4e92d9f9807726bf4d12d                                                                                                                     5.7s
+ => => extracting sha256:bfd0ac1b7bbcb946037571bb7480a6c89b468615c9cc7274b02d79cedf7a23dc                                                                                                                     6.6s
+ => => extracting sha256:46727000506833e62647ea0b6f24b60e7eab8a0c9e0546fa49e8a6d17860fd39                                                                                                                     8.5s
+ => => extracting sha256:f9d351d58bce60dec4cab5b9fc3c7a7975173c8c8eafc86b98e242f4c5292988                                                                                                                     5.1s
+ => => extracting sha256:73ca84afaf7739ca1ddf72d620deb2b19f3b0ce07dcfa36f2173daf9da64900c                                                                                                                     5.9s
+ => => extracting sha256:11096a662ebceb9f75f24feafc43e1461322dd2661bcf0740d5c7705b825a7e3                                                                                                                     4.0s
+ => [linux/arm64 java 1/2] FROM docker.io/library/eclipse-temurin:11-jdk@sha256:32459ee807582b4ce28ec42c986530de2c7293d69269e08b3d9ff8e0e865f0bc                                                             33.1s
+ => => resolve docker.io/library/eclipse-temurin:11-jdk@sha256:32459ee807582b4ce28ec42c986530de2c7293d69269e08b3d9ff8e0e865f0bc                                                                               0.0s
+ => => sha256:b4432e71ad436a9505c269821b3bf94131913cea4637f15f6569599baae42f68 128B / 128B                                                                                                                    0.2s
+ => => sha256:640e2d2b30f0a065c789ca75b2ebd9e91fbd62c9e357b1efa67023338fe10521 190.82MB / 190.82MB                                                                                                            6.5s
+ => => sha256:05aeb470f3c462a081767db5b92aa49a956ba558fd0474c8aa38f2197af012ab 12.08MB / 12.08MB                                                                                                              0.9s
+ => => sha256:ed02c6ade914c2962413c1ad2ccc86ed8d1512098f2c87fe7bafa8e1b5293185 28.38MB / 28.38MB                                                                                                              0.7s
+ => => extracting sha256:ed02c6ade914c2962413c1ad2ccc86ed8d1512098f2c87fe7bafa8e1b5293185                                                                                                                     2.7s
+ => => extracting sha256:05aeb470f3c462a081767db5b92aa49a956ba558fd0474c8aa38f2197af012ab                                                                                                                     2.7s
+ => => extracting sha256:640e2d2b30f0a065c789ca75b2ebd9e91fbd62c9e357b1efa67023338fe10521                                                                                                                     8.0s
+ => => extracting sha256:b4432e71ad436a9505c269821b3bf94131913cea4637f15f6569599baae42f68                                                                                                                    10.0s
+ => [linux/arm64 base-image 1/1] FROM docker.io/library/debian:bullseye-slim@sha256:f576b8067b77ff85c70725c976b7b6cde960898e2f19b9abab3fb148407614e2                                                          2.3s
+ => => resolve docker.io/library/debian:bullseye-slim@sha256:f576b8067b77ff85c70725c976b7b6cde960898e2f19b9abab3fb148407614e2                                                                                 0.0s
+ => => sha256:60197a4c18d4b386d371cf39d01c48e98c357bba06da0b070a3c1f75006fd838 30.05MB / 30.05MB                                                                                                              1.1s
+ => => extracting sha256:60197a4c18d4b386d371cf39d01c48e98c357bba06da0b070a3c1f75006fd838                                                                                                                     1.2s
+ => [linux/arm/v7 java 1/2] FROM docker.io/library/eclipse-temurin:11-jdk@sha256:32459ee807582b4ce28ec42c986530de2c7293d69269e08b3d9ff8e0e865f0bc                                                            28.3s
+ => => resolve docker.io/library/eclipse-temurin:11-jdk@sha256:32459ee807582b4ce28ec42c986530de2c7293d69269e08b3d9ff8e0e865f0bc                                                                               0.0s
+ => => sha256:c1bcf417553f092271b711562db068ec9e056908f7c661d29dca9efed85a9c90 161B / 161B                                                                                                                    0.2s
+ => => sha256:23bea7a86c86ec90ec4749e118891a2f0eb58e1e0b10051309411e8d8c4367a9 181.97MB / 181.97MB                                                                                                            6.2s
+ => => sha256:35e86f99b55853443ad37a84176e0b454887e7e14e159111d0f3497767d20bb6 11.71MB / 11.71MB                                                                                                              1.0s
+ => => sha256:5aeb313108e16ff98084efb2ae2830cbe915ea38b3e2fd1e32688dd9d8c11320 27.02MB / 27.02MB                                                                                                              0.8s
+ => => extracting sha256:5aeb313108e16ff98084efb2ae2830cbe915ea38b3e2fd1e32688dd9d8c11320                                                                                                                     2.2s
+ => => extracting sha256:35e86f99b55853443ad37a84176e0b454887e7e14e159111d0f3497767d20bb6                                                                                                                     3.2s
+ => => extracting sha256:23bea7a86c86ec90ec4749e118891a2f0eb58e1e0b10051309411e8d8c4367a9                                                                                                                     5.9s
+ => => extracting sha256:c1bcf417553f092271b711562db068ec9e056908f7c661d29dca9efed85a9c90                                                                                                                     7.4s
+ => [linux/arm/v7 base-image 1/1] FROM docker.io/library/debian:bullseye-slim@sha256:f576b8067b77ff85c70725c976b7b6cde960898e2f19b9abab3fb148407614e2                                                         1.9s
+ => => resolve docker.io/library/debian:bullseye-slim@sha256:f576b8067b77ff85c70725c976b7b6cde960898e2f19b9abab3fb148407614e2                                                                                 0.0s
+ => => sha256:314cda9d0ef2282082d2bd0efd7659e0d9edb3ceae8e7919d990bcf95cbb3d2b 26.56MB / 26.56MB                                                                                                              0.8s
+ => => extracting sha256:314cda9d0ef2282082d2bd0efd7659e0d9edb3ceae8e7919d990bcf95cbb3d2b                                                                                                                     1.1s
+ => [linux/amd64 java 2/2] RUN jlink         --add-modules                 java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,java.nam  17.2s
+ => [linux/arm/v7 java 2/2] RUN jlink         --add-modules                 java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,java.na  83.9s
+ => [linux/arm64 tomcat 2/4] RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalina.valves.HealthCheckValve" />' /usr/local/tomcat/conf/server.xml;                                5.0s
+ => [linux/arm64 java 2/2] RUN jlink         --add-modules                 java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,java.na  129.0s
+ => [linux/arm64 tomcat 3/4] COPY HealthCheck.java /usr/local/tomcat/                                                                                                                                         7.9s
+ => [linux/amd64 tomcat-with-custom-jdk 1/6] COPY --from=java /java /java                                                                                                                                     5.7s
+ => [linux/arm64 tomcat 4/4] RUN /opt/java/openjdk/bin/javac HealthCheck.java && rm -v HealthCheck.java                                                                                                      46.3s
+ => [linux/arm/v7 tomcat 2/4] RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalina.valves.HealthCheckValve" />' /usr/local/tomcat/conf/server.xml;                               4.5s
+ => [linux/amd64 tomcat 2/4] RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalina.valves.HealthCheckValve" />' /usr/local/tomcat/conf/server.xml;                                2.7s
+ => [linux/arm/v7 tomcat 3/4] COPY HealthCheck.java /usr/local/tomcat/                                                                                                                                        4.0s
+ => [linux/amd64 tomcat 3/4] COPY HealthCheck.java /usr/local/tomcat/                                                                                                                                         3.6s
+ => [linux/arm/v7 tomcat 4/4] RUN /opt/java/openjdk/bin/javac HealthCheck.java && rm -v HealthCheck.java                                                                                                     17.7s
+ => [linux/amd64 tomcat 4/4] RUN /opt/java/openjdk/bin/javac HealthCheck.java && rm -v HealthCheck.java                                                                                                       6.0s
+ => [linux/amd64 tomcat-with-custom-jdk 2/6] COPY --from=tomcat /usr/local/tomcat /tomcat                                                                                                                     1.2s
+ => [linux/amd64 tomcat-with-custom-jdk 3/6] WORKDIR /tomcat                                                                                                                                                  1.2s
+ => [linux/amd64 tomcat-with-custom-jdk 4/6] RUN set -eux;  apt-get update;  xargs -rt apt-get install -y --no-install-recommends < "/tomcat/native-jni-lib/.dependencies.txt";  rm -rf /var/lib/apt/lists/*  6.3s
+ => [linux/amd64 tomcat-with-custom-jdk 5/6] RUN set -eux;  nativeLines="$(catalina.sh configtest 2>&1)";  nativeLines="$(echo "$nativeLines" | grep 'Apache Tomcat Native')";  nativeLines="$(echo "$native  2.5s
+ => [linux/amd64 tomcat-with-custom-jdk 6/6] RUN ["test", "-s", "HealthCheck.class"]                                                                                                                          1.1s
+ => [linux/arm/v7 tomcat-with-custom-jdk 1/6] COPY --from=java /java /java                                                                                                                                    0.6s
+ => [linux/arm/v7 tomcat-with-custom-jdk 2/6] COPY --from=tomcat /usr/local/tomcat /tomcat                                                                                                                    0.6s
+ => [linux/arm/v7 tomcat-with-custom-jdk 3/6] WORKDIR /tomcat                                                                                                                                                 0.8s
+ => [linux/arm/v7 tomcat-with-custom-jdk 4/6] RUN set -eux;  apt-get update;  xargs -rt apt-get install -y --no-install-recommends < "/tomcat/native-jni-lib/.dependencies.txt";  rm -rf /var/lib/apt/lists  21.8s
+ => [linux/arm/v7 tomcat-with-custom-jdk 5/6] RUN set -eux;  nativeLines="$(catalina.sh configtest 2>&1)";  nativeLines="$(echo "$nativeLines" | grep 'Apache Tomcat Native')";  nativeLines="$(echo "$nati  11.5s
+ => [linux/arm/v7 tomcat-with-custom-jdk 6/6] RUN ["test", "-s", "HealthCheck.class"]                                                                                                                         0.8s
+ => [linux/arm64 tomcat-with-custom-jdk 1/6] COPY --from=java /java /java                                                                                                                                     0.5s
+ => [linux/arm64 tomcat-with-custom-jdk 2/6] COPY --from=tomcat /usr/local/tomcat /tomcat                                                                                                                     0.5s
+ => [linux/arm64 tomcat-with-custom-jdk 3/6] WORKDIR /tomcat                                                                                                                                                  0.7s
+ => [linux/arm64 tomcat-with-custom-jdk 4/6] RUN set -eux;  apt-get update;  xargs -rt apt-get install -y --no-install-recommends < "/tomcat/native-jni-lib/.dependencies.txt";  rm -rf /var/lib/apt/lists/  18.8s
+ => [linux/arm64 tomcat-with-custom-jdk 5/6] RUN set -eux;  nativeLines="$(catalina.sh configtest 2>&1)";  nativeLines="$(echo "$nativeLines" | grep 'Apache Tomcat Native')";  nativeLines="$(echo "$nativ  36.3s
+ => [linux/arm64 tomcat-with-custom-jdk 6/6] RUN ["test", "-s", "HealthCheck.class"]                                                                                                                          0.6s
+ => exporting to image                                                                                                                                                                                       37.2s
+ => => exporting layers                                                                                                                                                                                       6.3s
+ => => exporting manifest sha256:db5b435f12e374e97e0935aa622bf94384a8c13dadfcfb5d40be7f5698349478                                                                                                             0.0s
+ => => exporting config sha256:9c51b2d94e98a3173b0c3607308db358f17861c66d6f6c81949bbc3230b91983                                                                                                               0.0s
+ => => exporting manifest sha256:8808f61f2247029855d24773c031c72f4685c0c18b8ac0bb99336a1998140711                                                                                                             0.0s
+ => => exporting config sha256:d3a2259e89f1c4e9300b9abdc54846e82514a169e9a70b97b0d66b88c410f0c4                                                                                                               0.0s
+ => => exporting manifest sha256:347c5bd233894654925a925c9670f2cf917f91580488b3383a178190a233c2e9                                                                                                             0.0s
+ => => exporting config sha256:127cdb3ee850fcc4cb2332e1f85cba0b43e5b70727ed8411ee288ca95e2fef42                                                                                                               0.0s
+ => => exporting manifest list sha256:3c9daf560483efbd1653794765e1f5f2d0a1731cb3b30d7609e51617a716cb3b                                                                                                        0.0s
+ => => pushing layers                                                                                                                                                                                        29.3s
+ => => pushing manifest for docker.io/openseedbox/tomcat:latest@sha256:3c9daf560483efbd1653794765e1f5f2d0a1731cb3b30d7609e51617a716cb3b                                                                       1.5s
+ => [auth] openseedbox/tomcat:pull,push token for registry-1.docker.io
+ ```
