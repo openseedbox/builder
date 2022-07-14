@@ -23,6 +23,9 @@ RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalin
 COPY HealthCheck.java ${CATALINA_HOME}/
 RUN ${JAVA_HOME}/bin/javac HealthCheck.java && rm -v HealthCheck.java
 
+# remove webapps.dist as we don't need it
+# about webapps.dist: https://github.com/docker-library/tomcat/commit/807a2b4f219d70f5ba6f4773d4ee4ee155850b0d
+RUN rm -rf ${CATALINA_HOME}/webapps.dist
 
 FROM base-image as tomcat-with-custom-jdk
 # Copy Java
