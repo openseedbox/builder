@@ -6,22 +6,18 @@ FROM debian:bullseye-slim AS base-image
 FROM eclipse-temurin:11-jdk AS java
 RUN jlink \
         --add-modules \
-                java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,java.naming,java.net.http,java.prefs,java.rmi,java.scripting,java.security.jgss,java.security.sasl,java.sql,java.sql.rowset,java.transaction.xa,java.xml,jdk.crypto.cryptoki,jdk.jdi,jdk.management,jdk.unsupported \
+                java.base,java.compiler,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.management.rmi,java.naming,java.prefs,java.rmi,java.scripting,java.security.jgss,java.security.sasl,java.sql,java.sql.rowset,java.transaction.xa,java.xml,jdk.crypto.cryptoki,jdk.jdi,jdk.management,jdk.unsupported \
         --output /java/ \
         --strip-debug \
         --no-man-pages \
         --compress=2
 
 
-FROM tomcat:10.1.0-jdk11-temurin-focal as tomcat
+FROM tomcat:10.1.0-jre11-temurin-focal as tomcat
 #------------------------^
 # openjdk doesn't have linux/arm/v7 platform :(
 # Enable Tomcat HealthCheck endpoint
 RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalina.valves.HealthCheckValve" />' /usr/local/tomcat/conf/server.xml;
-
-# HEALTHCHECK without curl
-COPY HealthCheck.java ${CATALINA_HOME}/
-RUN ${JAVA_HOME}/bin/javac HealthCheck.java && rm -v HealthCheck.java
 
 # remove webapps.dist as we don't need it
 # about webapps.dist: https://github.com/docker-library/tomcat/commit/807a2b4f219d70f5ba6f4773d4ee4ee155850b0d
@@ -47,6 +43,7 @@ ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
 RUN set -eux; \
 	apt-get update; \
 	xargs -rt apt-get install -y --no-install-recommends < "$TOMCAT_NATIVE_LIBDIR/.dependencies.txt"; \
+	apt-get install -y --no-install-recommends curl; \
 	rm -rf /var/lib/apt/lists/*
 
 # verify Tomcat Native is working properly
@@ -62,8 +59,7 @@ RUN set -eux; \
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
 
-RUN ["test", "-s", "HealthCheck.class"]
-HEALTHCHECK --start-period=3s CMD [ "java", "-cp", ".", "HealthCheck", "8080", "||", "exit", "1" ]
+HEALTHCHECK --start-period=3s CMD curl --fail --silent --show-error --get http://localhost:8080/health
 
 
 FROM base-image as openseedbox
