@@ -13,7 +13,7 @@ RUN jlink \
         --compress=2
 
 
-FROM tomcat:10.1.0-jre11-temurin-focal as tomcat
+FROM tomcat:10.1.1-jre11-temurin-jammy as tomcat
 #------------------------^
 # openjdk doesn't have linux/arm/v7 platform :(
 # Enable Tomcat HealthCheck endpoint
@@ -31,30 +31,16 @@ ENV PATH $JAVA_HOME/bin:$PATH
 
 
 # Mimic Tomcat image (copy-paste from https://github.com/docker-library/tomcat)
+# without OpenSSL: no need for Tomcat Native Library
 COPY --from=tomcat /usr/local/tomcat /tomcat
 ENV CATALINA_HOME /tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
 WORKDIR $CATALINA_HOME
 
-# let "Tomcat Native" live somewhere isolated
-ENV TOMCAT_NATIVE_LIBDIR $CATALINA_HOME/native-jni-lib
-ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
-
 RUN set -eux; \
 	apt-get update; \
-	xargs -rt apt-get install -y --no-install-recommends < "$TOMCAT_NATIVE_LIBDIR/.dependencies.txt"; \
 	apt-get install -y --no-install-recommends curl; \
 	rm -rf /var/lib/apt/lists/*
-
-# verify Tomcat Native is working properly
-RUN set -eux; \
-	nativeLines="$(catalina.sh configtest 2>&1)"; \
-	nativeLines="$(echo "$nativeLines" | grep 'Apache Tomcat Native')"; \
-	nativeLines="$(echo "$nativeLines" | sort -u)"; \
-	if ! echo "$nativeLines" | grep -E 'INFO: Loaded( APR based)? Apache Tomcat Native library' >&2; then \
-		echo >&2 "$nativeLines"; \
-		exit 1; \
-	fi
 
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
