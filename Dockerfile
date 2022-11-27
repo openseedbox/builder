@@ -13,9 +13,20 @@ RUN jlink \
         --compress=2
 
 
-FROM tomcat:10.1.0-jre11-temurin-focal as tomcat
+FROM tomcat:10.1.2-jre11-temurin-jammy as tomcat
 #------------------------^
 # openjdk doesn't have linux/arm/v7 platform :(
+
+# install yq for $CATALINA_HOME/conf/server.xml editing
+RUN apt update -qq && apt install -y --no-install-recommends \
+	python3-pip jq \
+	&& pip install yq
+
+# disable SSL support (and so the OpenSSL requirement) by removing the listener itself
+# switching off doesn't help.
+# see https://github.com/openseedbox/openseedbox/issues/93 for the details!
+RUN xq -x '.Server.Listener|=map(select(."@className"!="org.apache.catalina.core.AprLifecycleListener"))' conf/server.xml > noapr.xml && mv -v noapr.xml conf/server.xml
+
 # Enable Tomcat HealthCheck endpoint
 RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalina.valves.HealthCheckValve" />' /usr/local/tomcat/conf/server.xml;
 
@@ -36,25 +47,16 @@ ENV CATALINA_HOME /tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
 WORKDIR $CATALINA_HOME
 
-# let "Tomcat Native" live somewhere isolated
-ENV TOMCAT_NATIVE_LIBDIR $CATALINA_HOME/native-jni-lib
-ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
+# ... without Tomcat Native
+RUN rm -rfv $CATALINA_HOME/native-jni-lib
 
 RUN set -eux; \
 	apt-get update; \
-	xargs -rt apt-get install -y --no-install-recommends < "$TOMCAT_NATIVE_LIBDIR/.dependencies.txt"; \
 	apt-get install -y --no-install-recommends curl; \
 	rm -rf /var/lib/apt/lists/*
 
-# verify Tomcat Native is working properly
-RUN set -eux; \
-	nativeLines="$(catalina.sh configtest 2>&1)"; \
-	nativeLines="$(echo "$nativeLines" | grep 'Apache Tomcat Native')"; \
-	nativeLines="$(echo "$nativeLines" | sort -u)"; \
-	if ! echo "$nativeLines" | grep -E 'INFO: Loaded( APR based)? Apache Tomcat Native library' >&2; then \
-		echo >&2 "$nativeLines"; \
-		exit 1; \
-	fi
+# verify Tomcat config is working properly
+RUN catalina.sh configtest 2>&1
 
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
