@@ -28,7 +28,7 @@ RUN apt update -qq && apt install -y --no-install-recommends \
 RUN xq -x '.Server.Listener|=map(select(."@className"!="org.apache.catalina.core.AprLifecycleListener"))' conf/server.xml > noapr.xml && mv -v noapr.xml conf/server.xml
 
 # Enable Tomcat HealthCheck endpoint
-RUN sed -i '/^               pattern=.*/a\\t<Valve className="org.apache.catalina.valves.HealthCheckValve" />' /usr/local/tomcat/conf/server.xml;
+RUN xq --xml-force-list 'Valve' -x '.Server.Service.Engine.Host.Valve+=[{"@className": "org.apache.catalina.valves.HealthCheckValve"}]' conf/server.xml > healthcheck.xml && mv -v healthcheck.xml conf/server.xml;
 
 # remove webapps.dist as we don't need it
 # about webapps.dist: https://github.com/docker-library/tomcat/commit/807a2b4f219d70f5ba6f4773d4ee4ee155850b0d
