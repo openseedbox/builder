@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1
 
 FROM debian:bullseye-slim AS base-image
+# for real language support please install "locales" package!
+ENV LANG=C.UTF-8
 
 
 FROM eclipse-temurin:11-jdk AS java
