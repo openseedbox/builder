@@ -83,6 +83,7 @@ RUN echo y | /play/play install siena-2.0.7 || echo "Downloading directly ... " 
 
 # Clone OpenSeedbox
 WORKDIR /src
+ARG CACHEBUSTER
 RUN bash -c "for repo in openseedbox{-common,-server,}; do echo cloning \$repo; git clone --depth=1 -q https://github.com/openseedbox/\$repo ; done"
 
 

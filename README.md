@@ -3,7 +3,7 @@
 
 ## openseedbox/base
 ```bash
-$ docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --tag openseedbox/base --push .
+$ docker buildx build --pull --build-arg CACHEBUSTER="`git show --oneline -s`" --platform linux/arm/v7,linux/arm64/v8,linux/amd64 --tag openseedbox/base --push .
 [+] Building 63.5s (57/57) FINISHED                                                                                                                                                                                
  => [internal] load .dockerignore                                                                                                                                                                             0.0s
  => => transferring context: 2B                                                                                                                                                                               0.0s
