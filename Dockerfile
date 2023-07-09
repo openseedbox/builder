@@ -34,12 +34,12 @@ RUN xq --xml-force-list 'Valve' -x '.Server.Service.Engine.Host.Valve+=[{"@class
 # about webapps.dist: https://github.com/docker-library/tomcat/commit/807a2b4f219d70f5ba6f4773d4ee4ee155850b0d
 RUN rm -rf ${CATALINA_HOME}/webapps.dist
 
+
 FROM base-image as tomcat-with-custom-jdk
 # Copy Java
 COPY --from=java /java /java
 ENV JAVA_HOME=/java
 ENV PATH $JAVA_HOME/bin:$PATH
-
 
 # Mimic Tomcat image (copy-paste from https://github.com/docker-library/tomcat)
 COPY --from=tomcat /usr/local/tomcat /tomcat
@@ -81,7 +81,6 @@ RUN echo y | /play/play install siena-2.0.7 || echo "Downloading directly ... " 
         && curl -S -s -L -o siena-2.0.7.zip "https://www.playframework.com/modules/siena-2.0.7.zip" \
         && for zipfile in *.zip; do module="${zipfile%.zip}"; unzip -d /play/modules/"$module" "$zipfile"; rm "$zipfile"; done;
 
-
 # Clone OpenSeedbox
 WORKDIR /src
 RUN bash -c "for repo in openseedbox{-common,-server,}; do echo cloning \$repo; git clone --depth=1 -q https://github.com/openseedbox/\$repo ; done"
@@ -93,4 +92,3 @@ ENV JAVA_HOME=/java
 
 COPY --from=openseedbox /src /src
 COPY --from=openseedbox /play /play
-
