@@ -23,7 +23,7 @@ jobs:
         run: |
           BASE_DOCKER_IMAGE=openseedbox/base
           TOMCAT_DOCKER_IMAGE=openseedbox/tomcat
-          VERSION=edge
+          VERSION=latest
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/v}
           fi
