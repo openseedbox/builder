@@ -15,7 +15,7 @@ RUN jlink \
         --compress=2
 
 
-FROM tomcat:10.1.10-jre11-temurin-jammy as tomcat
+FROM tomcat:10.1.16-jre11-temurin-jammy as tomcat
 #------------------------^
 # openjdk doesn't have linux/arm/v7 platform :(
 
