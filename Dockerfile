@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM debian:bullseye-slim AS base-image
+FROM debian:trixie-slim AS base-image
 # for real language support please install "locales" package!
 ENV LANG=C.UTF-8
 
@@ -68,7 +68,7 @@ HEALTHCHECK --start-period=3s CMD curl --fail --silent --show-error --get http:/
 
 FROM base-image as openseedbox
 RUN apt update -qq && apt install -y --no-install-recommends \
-        git zip unzip python ca-certificates curl;
+        git zip unzip python3 ca-certificates curl;
 
 # Install play
 ENV PLAY_VERSION=1.4.6
